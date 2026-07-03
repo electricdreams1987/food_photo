@@ -311,8 +311,23 @@
   .gal-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
   .gtile{aspect-ratio:1;border-radius:10px;border:1px solid var(--line);position:relative;overflow:hidden;transition:transform .25s ease;}
   .gtile:hover{transform:scale(1.04);z-index:2;box-shadow:var(--shadow);}
+  .gtile{cursor:zoom-in;}
   .gtile .glabel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:rgba(36,27,20,.5);font-weight:500;}
   .gtile img{width:100%;height:100%;object-fit:cover;}
+  .lightbox{
+    position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+    padding:24px;background:rgba(36,27,20,.86);backdrop-filter:blur(6px);
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{
+    max-width:min(100%,1100px);max-height:86svh;object-fit:contain;
+    border-radius:12px;box-shadow:0 24px 60px -22px rgba(0,0,0,.75);
+  }
+  .lightbox-close{
+    position:absolute;top:18px;right:18px;width:42px;height:42px;border:0;border-radius:50%;
+    background:#fff;color:var(--ink);font-size:1.55rem;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
 
   /* ---------- access ---------- */
   .access-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
@@ -437,7 +452,7 @@
       <a class="link" href="#flow">撮影の流れ</a>
       <a class="link" href="#price">料金</a>
       <a class="link" href="#gallery">作例</a>
-      <a class="btn btn-primary" href="#contact">無料で相談する</a>
+      <a class="btn btn-primary" href="contact.html">無料で相談する</a>
     </nav>
     <button class="hamb" id="hamb" aria-label="メニュー" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
@@ -458,7 +473,7 @@
       </div>
       <p class="lead">通販・カタログ・パッケージ・EC・広告で「選ばれる」食品写真を、<br>企画から撮影・納品までワンストップで。</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#contact">無料で見積り・相談する<span class="arw">→</span></a>
+        <a class="btn btn-primary" href="contact.html">無料で見積り・相談する<span class="arw">→</span></a>
         <a class="btn btn-ghost" href="#gallery">制作事例を見る</a>
       </div>
       <div class="chips">
@@ -510,7 +525,6 @@
         <img class="photo-img" src="images/hero-steak.png" alt="ステーキとグリル野菜を盛り付けた完成写真">
       </div>
     </div>
-    <p class="solve-note">ただの記録写真から、食欲を刺激して売上をつくる商業写真へ。<br>確かな撮影技術と最新AIの掛け合わせが、この圧倒的な差を生み出します。</p>
   </div>
 </section>
 
@@ -578,7 +592,7 @@
           <li>高額なスタジオ代や大掛かりな備品代が不要</li>
           <li>SNSやWEBサイトのメインビジュアルに最適</li>
         </ul>
-        <a class="btn btn-primary" href="#contact">このプランで相談</a>
+        <a class="btn btn-primary" href="contact.html">このプランで相談</a>
       </div>
       <div class="plan reveal">
         <div class="pname">切り抜き商品プラン<br>（背景なし）</div>
@@ -592,7 +606,7 @@
           <li>5カット以上のご依頼で大谷立ち会い可能</li>
           <li>ECサイトやカタログの商品一覧に最適</li>
         </ul>
-        <a class="btn btn-ghost" href="#contact">このプランで相談</a>
+        <a class="btn btn-ghost" href="contact.html">このプランで相談</a>
       </div>
       <div class="plan reveal">
         <div class="pname">フードコーディネータープラン</div>
@@ -606,7 +620,7 @@
           <li>印刷にも対応する高品質なデータ（tiff納品）</li>
           <li>オンラインや実地での撮影立ち会い可能</li>
         </ul>
-        <a class="btn btn-ghost" href="#contact">このプランで相談</a>
+        <a class="btn btn-ghost" href="contact.html">このプランで相談</a>
       </div>
       <div class="plan reveal">
         <div class="pname">食品形態撮影</div>
@@ -620,11 +634,11 @@
           <li>ECの一覧用や流通向け資料に最適</li>
           <li>低コストで大量のアイテム数にも対応可能</li>
         </ul>
-        <a class="btn btn-ghost" href="#contact">このプランで相談</a>
+        <a class="btn btn-ghost" href="contact.html">このプランで相談</a>
       </div>
     </div>
     <p class="price-notes">
-      ※ 価格はすべて税別です。&nbsp; ※ 食材を弊社で用意する場合、食材費は別途。&nbsp; ※ 食器レンタルが必要な場合、別途費用がかかります。&nbsp; ※ レシピ作成・デザイン制作も併せてご相談いただけます。<br><span style="font-size:0.85em;">※ 基本プランはプロ撮影+AI背景生成となりますが、フードコーディネーターを配した従来型のスタジオ建て込み撮影(調理・スタイリング)も可能です。用途に合わせてご相談ください。</span>
+      ※ 価格はすべて税別です。
     </p>
     <div class="hero-cta" style="justify-content:center;margin-top:22px;margin-bottom:0;">
       <a class="btn btn-primary" href="estimation.html">見積もりシミュレーションはこちら<span class="arw">→</span></a>
@@ -637,8 +651,8 @@
   <div class="wrap">
     <div class="section-head center">
       <span class="eyebrow">Cost Comparison</span>
-      <h2>わかりやすい料金</h2>
-      <p>スタジオ代や備品代、コーディネート代など、一般的な撮影で追加されがちな費用をすべて含んだコミコミ価格です。<br>見積もり段階から予算がブレない、当スタジオと他社との費用比較をご覧ください。<br><span>（※盛り付けイメージ写真 3カットを半日で撮影した場合の比較一例）</span></p>
+      <h2>料金比較</h2>
+      <p>スタジオ代や備品代、コーディネート代など、<br>一般的な撮影で追加されがちな費用をすべて含んだコミコミ価格です。<br><span>（※AI背景合成プラン 3カットを半日で撮影した場合の比較一例）</span></p>
     </div>
     <div class="cmp-wrap">
       <table class="cmp">
@@ -649,12 +663,12 @@
           <tr><th>スタジオ代</th><td class="us">込み</td><td>込み</td><td>25,000</td><td>27,000</td></tr>
           <tr><th>食器・備品代</th><td class="us">込み</td><td>35,000</td><td>35,000</td><td>35,000</td></tr>
           <tr><th>コーディネート代</th><td class="us">込み</td><td>35,000</td><td>50,000〜</td><td>35,000</td></tr>
-          <tr><th>撮影代</th><td class="us">105,000</td><td>50,000</td><td>50,000</td><td>80,000</td></tr>
-          <tr class="total"><th>合計</th><td class="us">105,000</td><td>120,000</td><td>160,000</td><td>177,000</td></tr>
+          <tr><th>撮影代</th><td class="us">90,000</td><td>50,000</td><td>50,000</td><td>80,000</td></tr>
+          <tr class="total"><th>合計</th><td class="us">90,000</td><td>120,000</td><td>160,000</td><td>177,000</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="cmp-cap">※ 比較は一例です。実際の見積りはお問い合わせください。<br>金額はすべて差し替え可能です。</p>
+    <p class="cmp-cap">※ 比較は一例です。</p>
   </div>
 </section>
 
@@ -687,13 +701,18 @@
   </div>
 </section>
 
+<div class="lightbox" id="galleryLightbox" aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="閉じる">×</button>
+  <img src="" alt="">
+</div>
+
 <!-- ============ FINAL CTA ============ -->
 <section class="section final" id="contact">
   <div class="wrap">
     <h2>お見積り・ご相談は無料です。</h2>
     <p>「この商品をもっと美味しそうに撮りたい」。<br>まずはお気軽にご相談ください。</p>
     <div class="final-cta">
-      <a class="btn btn-white" href="#contact">WEBで問い合わせる<span class="arw">→</span></a>
+      <a class="btn btn-white" href="contact.html">WEBで問い合わせる<span class="arw">→</span></a>
     </div>
   </div>
 </section>
@@ -719,8 +738,8 @@
         <div class="foot-col">
           <h4>Company</h4>
           <a href="#">会社概要</a>
-          <a href="#contact">お問い合わせ</a>
-          <a href="#">プライバシーポリシー</a>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="privacy.html">プライバシーポリシー</a>
         </div>
       </div>
     </div>
@@ -760,6 +779,31 @@
   } else {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
   }
+
+  // gallery lightbox
+  const lightbox = document.getElementById('galleryLightbox');
+  const lightboxImg = lightbox.querySelector('img');
+  const lightboxClose = lightbox.querySelector('.lightbox-close');
+  document.querySelectorAll('.gtile img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.currentSrc || img.src;
+      lightboxImg.alt = img.alt || '制作事例';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+    });
+  });
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxImg.src = '';
+  };
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+  });
 </script>
 </body>
 </html>
