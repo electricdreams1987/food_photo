@@ -269,7 +269,7 @@
   .flow-note{margin:22px auto 0;max-width:760px;text-align:center;font-size:.86rem;line-height:1.8;color:var(--ink-soft);}
 
   /* ---------- pricing ---------- */
-  .price-grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:stretch;max-width:860px;margin:0 auto;}
+  .price-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:stretch;max-width:980px;margin:0 auto;}
   .plan{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px 28px;display:flex;flex-direction:column;position:relative;}
   .plan.feat{border:2px solid var(--sizzle);box-shadow:var(--shadow);}
   .plan.feat .ribbon{position:absolute;top:-13px;left:28px;background:var(--sizzle);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:.35em .9em;border-radius:999px;}
@@ -281,6 +281,8 @@
   .plan.feat .pname{color:var(--sizzle);}
   .plan .psub{font-size:.8rem;color:var(--ink-faint);margin-bottom:1.1em;}
   .plan .pprice{display:flex;align-items:baseline;gap:.15em;margin-bottom:.2em;}
+  .plan .pprice{flex-wrap:wrap;}
+  .plan .pprice .old-price{width:100%;font-size:.95rem;color:var(--ink-faint);text-decoration:line-through;text-decoration-thickness:1px;font-weight:700;margin-bottom:.15em;}
   .plan .pprice .yen{font-weight:900;font-size:1.1rem;}
   .plan .pprice .val{font-family:"Anton";font-size:2.9rem;color:var(--ink);line-height:1;}
   .plan .pprice .tilde{font-weight:700;color:var(--ink-soft);}
@@ -547,7 +549,7 @@
       </div>
       <div class="str-card reveal">
         <div class="top"><img class="photo-img" src="images/solution-deliverables.png" alt="食品写真の納品物を確認している様子"><span class="knum">3</span></div>
-        <div class="body"><h3>高品質かつ<br>低価格を実現</h3><p>プロ撮影とAI生成を組み合わせ、<br>品質を保ちながら<br>コストを抑えた写真制作が可能です。</p></div>
+        <div class="body"><h3>高品質かつ<br>低価格を実現</h3><p>従来の予算でも、<br>ウェブや印刷媒体の<br>写真クオリティ向上が可能です。</p></div>
       </div>
     </div>
   </div>
@@ -577,13 +579,13 @@
   <div class="wrap">
     <div class="section-head center">
       <span class="eyebrow">Price</span>
-      <h2>料金はシンプルに、<br>1プラン。</h2>
+      <h2>料金はシンプルに</h2>
       <p>プロ撮影・背景AI生成・基本レタッチをまとめた、<br>分かりやすい価格設定です。</p>
     </div>
     <div class="price-grid">
-      <div class="plan plan-main feat reveal">
-        <div class="pname">プロ撮影 + 背景AI生成プラン</div>
-        <div class="psub">プロ撮影とAI背景生成による高品質な食品写真</div>
+      <div class="plan reveal">
+        <div class="pname">1カットプラン</div>
+        <div class="psub">まずは1枚から試せる基本プラン</div>
         <div class="pprice"><span class="yen">¥</span><span class="val">30,000</span></div>
         <div class="pcut">／ 1カット（税別）</div>
         <p class="pdesc">プロが撮影した商品のシズル感と、最新AIが生成する背景を美しく合成。スタジオ代をかけずに理想の世界観を表現します。</p>
@@ -592,6 +594,20 @@
           <li>カフェやキッチンなど無限のシチュエーション指定</li>
           <li>高額なスタジオ代や大掛かりな備品代が不要</li>
           <li>SNSやWEBサイトのメインビジュアルに最適</li>
+        </ul>
+        <a class="btn btn-primary" href="contact.html">このプランで相談</a>
+      </div>
+      <div class="plan feat reveal">
+        <div class="pname">5カットプラン</div>
+        <div class="psub">複数カットをまとめて依頼したい方向け</div>
+        <div class="pprice"><span class="old-price">通常 ¥150,000</span><span class="yen">¥</span><span class="val">120,000</span></div>
+        <div class="pcut">／ 5カット（税別）</div>
+        <p class="pdesc">同一商品やシリーズ商品をまとめて撮影し、用途に合わせたAI背景で展開。LP・SNS・ECの商品訴求に使いやすいセットプランです。</p>
+        <ul>
+          <li>プロ撮影 + 背景AI生成の5カットセット</li>
+          <li>複数の見せ方や使用媒体に合わせて展開</li>
+          <li>1カットずつ依頼するよりも費用を抑えやすい設計</li>
+          <li>商品ページや広告素材をまとめて整備したい場合に最適</li>
         </ul>
         <a class="btn btn-primary" href="contact.html">このプランで相談</a>
       </div>
@@ -611,7 +627,7 @@
     <div class="section-head center">
       <span class="eyebrow">Cost Comparison</span>
       <h2>料金比較</h2>
-      <p>スタジオ代や備品代、コーディネート代など、<br>一般的な撮影で追加されがちな費用をすべて含んだコミコミ価格です。<br><span>（※プロ撮影 + 背景AI生成プラン 3カットを半日で撮影した場合の比較一例）</span></p>
+      <p>スタジオ代や備品代、コーディネート代など、<br>一般的な撮影で追加されがちな費用をすべて含んだコミコミ価格です。<br><span>（※プロ撮影 + 背景AI生成プラン 5カットの場合の比較一例）</span></p>
     </div>
     <div class="cmp-wrap">
       <table class="cmp">
@@ -619,11 +635,11 @@
           <tr><th></th><th class="us">当社</th><th>A社</th><th>B社</th><th>C社</th></tr>
         </thead>
         <tbody>
-          <tr><th>スタジオ代</th><td class="us">込み</td><td>込み</td><td>25,000</td><td>27,000</td></tr>
-          <tr><th>食器・備品代</th><td class="us">込み</td><td>35,000</td><td>35,000</td><td>35,000</td></tr>
-          <tr><th>コーディネート代</th><td class="us">込み</td><td>35,000</td><td>50,000〜</td><td>35,000</td></tr>
-          <tr><th>撮影代</th><td class="us">90,000</td><td>50,000</td><td>50,000</td><td>80,000</td></tr>
-          <tr class="total"><th>合計</th><td class="us">90,000</td><td>120,000</td><td>160,000</td><td>177,000</td></tr>
+          <tr><th>スタジオ代</th><td class="us">込み</td><td>30,000</td><td>50,000</td><td>60,000</td></tr>
+          <tr><th>食器・備品代</th><td class="us">込み</td><td>40,000</td><td>50,000</td><td>45,000</td></tr>
+          <tr><th>コーディネート代</th><td class="us">込み</td><td>50,000</td><td>80,000</td><td>70,000</td></tr>
+          <tr><th>撮影代</th><td class="us">込み</td><td>100,000</td><td>120,000</td><td>150,000</td></tr>
+          <tr class="total"><th>合計</th><td class="us">120,000</td><td>220,000</td><td>300,000</td><td>325,000</td></tr>
         </tbody>
       </table>
     </div>
