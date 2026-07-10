@@ -78,6 +78,7 @@
   .plan-input:last-of-type{border-bottom:1px solid var(--line)}
   .plan-title{font-weight:900;line-height:1.5}
   .plan-price{color:var(--ink-soft);font-size:.84rem;margin-top:.15em}
+  .plan-price .old-price{color:var(--ink-faint);text-decoration:line-through;text-decoration-thickness:1px;margin-right:.55em}
   label{display:block}
   input[type="number"]{
     width:100%;height:46px;border:1px solid var(--line-strong);border-radius:10px;
@@ -197,10 +198,18 @@
 
         <div class="plan-input">
           <label for="plan-ai">
-            <span class="plan-title">プロ撮影 + 背景AI生成プラン</span>
+            <span class="plan-title">1カットプラン</span>
             <span class="plan-price">¥30,000 / 1カット（税別）</span>
           </label>
           <div class="unit"><input id="plan-ai" type="number" min="0" step="1" value="0"><span>カット</span></div>
+        </div>
+
+        <div class="plan-input">
+          <label for="plan-five">
+            <span class="plan-title">5カットプラン</span>
+            <span class="plan-price"><span class="old-price">通常 ¥150,000</span>¥120,000 / 5カット（税別）</span>
+          </label>
+          <div class="unit"><input id="plan-five" type="number" min="0" step="1" value="0"><span>セット</span></div>
         </div>
 
         <p class="hint">金額は目安です。商品パッケージ撮影、フードコーディネータープランは別途ご相談ください。</p>
@@ -267,7 +276,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
   const plans = [
-    { id: "plan-ai", name: "プロ撮影 + 背景AI生成プラン", unit: 30000 }
+    { id: "plan-ai", name: "1カットプラン", unit: 30000, unitText: "1カット", qtyLabel: "カット" },
+    { id: "plan-five", name: "5カットプラン", unit: 120000, unitText: "5カット", qtyLabel: "セット" }
   ];
 
   const yen = new Intl.NumberFormat("ja-JP", {
@@ -318,8 +328,8 @@
     } else {
       lineBody.innerHTML = rows.map((row) => `
         <tr>
-          <td>${row.name}<br><span class="accent">${yen.format(row.unit)} / 1カット</span></td>
-          <td class="qty">${row.count}カット</td>
+          <td>${row.name}<br><span class="accent">${yen.format(row.unit)} / ${row.unitText}</span></td>
+          <td class="qty">${row.count}${row.qtyLabel}</td>
           <td class="price">${yen.format(row.amount)}</td>
         </tr>
       `).join("");
