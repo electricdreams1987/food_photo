@@ -139,65 +139,66 @@
     </section>
 
     <section class="form-card" aria-label="お問い合わせフォーム">
-      <form action="#" method="post">
+      <form id="contact-form" action="mailto:sizzle@inter-sect.co.jp" method="post" enctype="text/plain">
         <div class="field">
           <label for="company">会社名・団体名<span class="req">必須</span></label>
-          <input type="text" id="company" name="company" autocomplete="organization" required>
+          <input type="text" id="company" name="会社名・団体名" autocomplete="organization" required>
         </div>
 
         <div class="field">
           <label for="name">お名前<span class="req">必須</span></label>
-          <input type="text" id="name" name="name" autocomplete="name" required>
+          <input type="text" id="name" name="お名前" autocomplete="name" required>
         </div>
 
         <div class="field">
-          <label for="email">メールアドレス<span class="req">必須</span></label>
-          <input type="email" id="email" name="email" autocomplete="email" required>
+          <label for="email">メールアドレス<span class="optional">任意</span></label>
+          <input type="email" id="email" name="email" autocomplete="email">
         </div>
 
         <div class="field">
           <label for="tel">電話番号<span class="optional">任意</span></label>
-          <input type="tel" id="tel" name="tel" autocomplete="tel">
+          <input type="tel" id="tel" name="電話番号" autocomplete="tel">
         </div>
 
         <div class="field">
           <label>ご検討中のプラン<span class="req">必須</span></label>
           <div class="checks">
-            <label class="check"><input type="checkbox" name="plans[]" value="1カットプラン">1カットプラン</label>
-            <label class="check"><input type="checkbox" name="plans[]" value="5カットプラン">5カットプラン</label>
-            <label class="check"><input type="checkbox" name="plans[]" value="別途相談">商品パッケージ撮影・フードコーディネータープランなど別途相談</label>
+            <label class="check"><input type="checkbox" name="ご検討中のプラン" value="1カットプラン">1カットプラン</label>
+            <label class="check"><input type="checkbox" name="ご検討中のプラン" value="5カットプラン">5カットプラン</label>
+            <label class="check"><input type="checkbox" name="ご検討中のプラン" value="別途相談">商品パッケージ撮影・フードコーディネータープランなど別途相談</label>
           </div>
           <p class="hint">該当する内容を選択してください。</p>
         </div>
 
         <div class="field">
           <label for="cuts">撮影予定のアイテム数・カット数<span class="optional">任意</span></label>
-          <input type="text" id="cuts" name="cuts" placeholder="例：約5商品で合計15カット">
+          <input type="text" id="cuts" name="撮影予定のアイテム数・カット数" placeholder="例：約5商品で合計15カット">
         </div>
 
         <div class="field">
           <label for="message">お問い合わせ内容<span class="req">必須</span></label>
-          <textarea id="message" name="message" placeholder="ご要望、撮影したい食品の種類、希望の納期などをご記入ください。" required></textarea>
+          <textarea id="message" name="お問い合わせ内容" placeholder="ご要望、撮影したい食品の種類、希望の納期などをご記入ください。" required></textarea>
         </div>
 
         <div class="privacy">
           <label class="check">
-            <input type="checkbox" name="privacy" value="同意する" required>
+            <input type="checkbox" name="プライバシーポリシー同意" value="同意する" required>
             <span><a class="text-link" href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>に同意する</span>
           </label>
         </div>
 
         <div class="submit-row">
-          <button type="submit">この内容で送信する</button>
+          <button type="submit">この内容でメールを作成する</button>
         </div>
       </form>
     </section>
 
-    <p class="foot-note">送信先は後からシステム連携できるよう、現在は仮設定です。</p>
+    <p class="foot-note">送信内容はメール作成画面に反映されます。内容をご確認のうえ送信してください。</p>
   </div>
 </main>
 <script>
-  const planChecks = Array.from(document.querySelectorAll('input[name="plans[]"]'));
+  const form = document.getElementById("contact-form");
+  const planChecks = Array.from(document.querySelectorAll('input[name="ご検討中のプラン"]'));
 
   function syncPlanRequired() {
     const hasChecked = planChecks.some((check) => check.checked);
@@ -208,6 +209,35 @@
 
   planChecks.forEach((check) => check.addEventListener("change", syncPlanRequired));
   syncPlanRequired();
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    syncPlanRequired();
+    if (!form.reportValidity()) return;
+
+    const selectedPlans = planChecks
+      .filter((check) => check.checked)
+      .map((check) => check.value)
+      .join("、");
+
+    const body = [
+      "食品写真撮影のお問い合わせ",
+      "",
+      `会社名・団体名：${document.getElementById("company").value}`,
+      `お名前：${document.getElementById("name").value}`,
+      `メールアドレス：${document.getElementById("email").value || "未入力"}`,
+      `電話番号：${document.getElementById("tel").value || "未入力"}`,
+      `ご検討中のプラン：${selectedPlans}`,
+      `撮影予定のアイテム数・カット数：${document.getElementById("cuts").value || "未入力"}`,
+      "",
+      "お問い合わせ内容：",
+      document.getElementById("message").value
+    ].join("\n");
+
+    const subject = encodeURIComponent("食品写真撮影のお問い合わせ");
+    const encodedBody = encodeURIComponent(body);
+    window.location.href = `mailto:sizzle@inter-sect.co.jp?subject=${subject}&body=${encodedBody}`;
+  });
 </script>
 </body>
 </html>
