@@ -90,6 +90,7 @@
     display:flex;align-items:flex-start;gap:10px;font-weight:700;color:var(--ink-soft);
     line-height:1.55;
   }
+  .check.nowrap{grid-column:1/-1;white-space:nowrap;font-size:.95rem;max-width:100%;overflow-x:auto}
   input[type="checkbox"]{
     width:18px;height:18px;margin:.23em 0 0;accent-color:var(--sizzle);flex:none;
   }
@@ -106,6 +107,14 @@
   }
   button:hover{background:var(--ember);transform:translateY(-2px);box-shadow:0 16px 30px -16px rgba(230,78,27,.9)}
   button:active{transform:translateY(0)}
+  button:disabled{cursor:not-allowed;opacity:.68;transform:none;box-shadow:none}
+  .form-status{
+    display:none;margin-top:22px;padding:18px 20px;border-radius:14px;
+    background:#fff7ef;border:1px solid rgba(230,78,27,.24);
+    color:var(--ink);font-weight:900;line-height:1.7;text-align:center;
+  }
+  .form-status.show{display:block}
+  .form-status.error{background:#fff2f0;border-color:rgba(199,52,45,.28);color:#b72d26}
   .foot-note{
     margin:22px 0 0;text-align:center;color:var(--ink-faint);font-size:.82rem;
   }
@@ -117,6 +126,7 @@
     .back{font-size:.84rem}
     .form-card{padding:24px 20px}
     .checks{grid-template-columns:1fr;padding:14px}
+    .check.nowrap{font-size:.86rem}
     .submit-row{display:block}
     button{width:100%;min-width:0}
   }
@@ -139,10 +149,11 @@
     </section>
 
     <section class="form-card" aria-label="お問い合わせフォーム">
-      <form id="contact-form" action="mailto:sizzle@inter-sect.co.jp" method="post" enctype="text/plain">
+      <form id="contact-form" action="https://formspree.io/f/mzdlnnzk" method="post">
+        <input type="hidden" name="_subject" value="食品写真撮影のお問い合わせ">
         <div class="field">
-          <label for="company">会社名・団体名<span class="req">必須</span></label>
-          <input type="text" id="company" name="会社名・団体名" autocomplete="organization" required>
+          <label for="company">会社名・団体名<span class="optional">任意</span></label>
+          <input type="text" id="company" name="会社名・団体名" autocomplete="organization">
         </div>
 
         <div class="field">
@@ -151,8 +162,8 @@
         </div>
 
         <div class="field">
-          <label for="email">メールアドレス<span class="optional">任意</span></label>
-          <input type="email" id="email" name="email" autocomplete="email">
+          <label for="email">メールアドレス<span class="req">必須</span></label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
         </div>
 
         <div class="field">
@@ -165,7 +176,7 @@
           <div class="checks">
             <label class="check"><input type="checkbox" name="ご検討中のプラン" value="1カットプラン">1カットプラン</label>
             <label class="check"><input type="checkbox" name="ご検討中のプラン" value="5カットプラン">5カットプラン</label>
-            <label class="check"><input type="checkbox" name="ご検討中のプラン" value="別途相談">商品パッケージ撮影・フードコーディネータープランなど別途相談</label>
+            <label class="check nowrap"><input type="checkbox" name="ご検討中のプラン" value="別途相談">商品パッケージ撮影・フードコーディネータープランなど別途相談</label>
           </div>
           <p class="hint">該当する内容を選択してください。</p>
         </div>
@@ -188,16 +199,19 @@
         </div>
 
         <div class="submit-row">
-          <button type="submit">この内容でメールを作成する</button>
+          <button type="submit">この内容で送信する</button>
         </div>
+        <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
       </form>
     </section>
 
-    <p class="foot-note">送信内容はメール作成画面に反映されます。内容をご確認のうえ送信してください。</p>
+    <p class="foot-note">送信内容はお問い合わせ窓口へ直接送信されます。</p>
   </div>
 </main>
 <script>
   const form = document.getElementById("contact-form");
+  const submitButton = form.querySelector('button[type="submit"]');
+  const statusEl = document.getElementById("form-status");
   const planChecks = Array.from(document.querySelectorAll('input[name="ご検討中のプラン"]'));
 
   function syncPlanRequired() {
@@ -210,33 +224,36 @@
   planChecks.forEach((check) => check.addEventListener("change", syncPlanRequired));
   syncPlanRequired();
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     syncPlanRequired();
     if (!form.reportValidity()) return;
 
-    const selectedPlans = planChecks
-      .filter((check) => check.checked)
-      .map((check) => check.value)
-      .join("、");
+    submitButton.disabled = true;
+    submitButton.textContent = "送信中...";
+    statusEl.className = "form-status";
+    statusEl.textContent = "";
 
-    const body = [
-      "食品写真撮影のお問い合わせ",
-      "",
-      `会社名・団体名：${document.getElementById("company").value}`,
-      `お名前：${document.getElementById("name").value}`,
-      `メールアドレス：${document.getElementById("email").value || "未入力"}`,
-      `電話番号：${document.getElementById("tel").value || "未入力"}`,
-      `ご検討中のプラン：${selectedPlans}`,
-      `撮影予定のアイテム数・カット数：${document.getElementById("cuts").value || "未入力"}`,
-      "",
-      "お問い合わせ内容：",
-      document.getElementById("message").value
-    ].join("\n");
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      });
 
-    const subject = encodeURIComponent("食品写真撮影のお問い合わせ");
-    const encodedBody = encodeURIComponent(body);
-    window.location.href = `mailto:sizzle@inter-sect.co.jp?subject=${subject}&body=${encodedBody}`;
+      if (!response.ok) throw new Error("submit failed");
+
+      form.reset();
+      syncPlanRequired();
+      statusEl.textContent = "お問い合わせありがとうございます。担当者より、ご連絡させていただきます。";
+      statusEl.className = "form-status show";
+    } catch (error) {
+      statusEl.textContent = "送信できませんでした。お手数ですが、sizzle@inter-sect.co.jp まで直接ご連絡ください。";
+      statusEl.className = "form-status show error";
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "この内容で送信する";
+    }
   });
 </script>
 </body>
