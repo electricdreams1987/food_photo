@@ -111,6 +111,9 @@
     background:#fff;border:1px solid var(--line);border-radius:12px;padding:34px;
     color:var(--ink);
   }
+  .estimate-doc.pdf-mode{
+    width:190mm;max-width:190mm;border-radius:0;box-shadow:none;background:#fff;
+  }
   .doc-top{
     display:flex;justify-content:space-between;gap:24px;align-items:flex-start;
     border-bottom:3px solid var(--ink);padding-bottom:20px;margin-bottom:22px;
@@ -360,6 +363,11 @@
   }
 
   function downloadPdf() {
+    if (typeof html2pdf !== "function") {
+      alert("PDF作成ライブラリの読み込みに失敗しました。インターネット接続を確認して、ページを再読み込みしてください。");
+      return;
+    }
+
     const totals = calculate();
     if (totals.subtotal === 0) {
       alert("カット数を入力してください");
@@ -368,29 +376,45 @@
 
     updateCompanyName();
     const element = document.getElementById("estimate-document");
-    const pdfElement = element.cloneNode(true);
-    pdfElement.style.width = "190mm";
-    pdfElement.style.maxWidth = "190mm";
-    pdfElement.style.borderRadius = "0";
-    pdfElement.style.boxShadow = "none";
-    pdfElement.style.position = "fixed";
-    pdfElement.style.left = "-10000px";
-    pdfElement.style.top = "0";
-    pdfElement.style.background = "#ffffff";
-    document.body.appendChild(pdfElement);
+    const button = document.getElementById("download-pdf");
+    const previousStyle = element.getAttribute("style");
+    const previousButtonText = button.textContent;
 
     const options = {
       margin: [10, 10, 10, 10],
       filename: "Phoood_見積書.pdf",
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: 1200
+      },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
       pagebreak: { mode: ["css", "legacy"], avoid: [".doc-note", ".doc-footer", ".total-row"] }
     };
 
-    html2pdf().set(options).from(pdfElement).save().then(() => {
-      pdfElement.remove();
-    });
+    button.disabled = true;
+    button.textContent = "PDFを作成中...";
+    element.classList.add("pdf-mode");
+
+    Promise.resolve(document.fonts && document.fonts.ready)
+      .then(() => html2pdf().set(options).from(element).save())
+      .catch(() => {
+        alert("PDFの作成に失敗しました。時間をおいてもう一度お試しください。");
+      })
+      .finally(() => {
+        element.classList.remove("pdf-mode");
+        if (previousStyle === null) {
+          element.removeAttribute("style");
+        } else {
+          element.setAttribute("style", previousStyle);
+        }
+        button.disabled = false;
+        button.textContent = previousButtonText;
+      });
   }
 
   setIssueDate();
