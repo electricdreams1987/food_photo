@@ -111,16 +111,6 @@
     background:#fff;border:1px solid var(--line);border-radius:12px;padding:34px;
     color:var(--ink);
   }
-  .estimate-doc.pdf-mode{
-    width:180mm;max-width:180mm;border-radius:0;box-shadow:none;background:#fff;
-  }
-  .pdf-capture-area{
-    position:fixed;left:0;top:0;z-index:9999;width:180mm;max-width:180mm;
-    margin:0;background:#fff;pointer-events:none;
-  }
-  .pdf-capture-area .estimate-doc{
-    width:180mm;max-width:180mm;border-radius:0;box-shadow:none;background:#fff;
-  }
   .doc-top{
     display:flex;justify-content:space-between;gap:24px;align-items:flex-start;
     border-bottom:3px solid var(--ink);padding-bottom:20px;margin-bottom:22px;
@@ -385,12 +375,6 @@
     const element = document.getElementById("estimate-document");
     const button = document.getElementById("download-pdf");
     const previousButtonText = button.textContent;
-    const captureArea = document.createElement("div");
-    const pdfElement = element.cloneNode(true);
-
-    captureArea.className = "pdf-capture-area";
-    pdfElement.classList.add("pdf-mode");
-    captureArea.appendChild(pdfElement);
 
     const options = {
       margin: [10, 10, 10, 10],
@@ -399,26 +383,20 @@
       html2canvas: {
         scale: 2,
         useCORS: true,
-        backgroundColor: "#ffffff",
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: 1200
+        backgroundColor: "#ffffff"
       },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      pagebreak: { mode: ["css", "legacy"], avoid: [".doc-note", ".doc-footer", ".total-row"] }
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
     };
 
     button.disabled = true;
     button.textContent = "PDFを作成中...";
-    document.body.appendChild(captureArea);
 
     Promise.resolve(document.fonts && document.fonts.ready)
-      .then(() => html2pdf().set(options).from(pdfElement).save())
+      .then(() => html2pdf().set(options).from(element).save())
       .catch(() => {
         alert("PDFの作成に失敗しました。時間をおいてもう一度お試しください。");
       })
       .finally(() => {
-        captureArea.remove();
         button.disabled = false;
         button.textContent = previousButtonText;
       });
